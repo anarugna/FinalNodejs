@@ -1,27 +1,32 @@
 const pool = require('../config/db');
 
 const User = {
-    create: (data, callback) => {
-        const sql = `INSERT INTO Usuario (nombre, email, password) VALUES ($1, $2, $3) RETURNING *`;
-        const values = [data.nombre, data.email, data.password];
-        pool.query(sql, values, (err, result) => {
-            if (err) callback(err);
-            callback(null, result.rows[0]);
-        });
+    create: async (data) => {
+        try {
+            const sql = `INSERT INTO Usuario (nombre, email, password) VALUES (?, ?, ?)`;
+            const [result] = await pool.query(sql, [data.nombre, data.email, data.password]);
+            return { id: result.insertId, ...data };
+        } catch (err) {
+            throw err;
+        }
     },
-    findByEmail: (email, callback) => {
-        const sql = 'SELECT * FROM Usuario WHERE email = $1';
-        pool.query(sql, [email], (err, result) => {
-            if (err) callback(err);
-            callback(null, result.rows[0]);
-        });
+    findByEmail: async (email) => {
+        try {
+            const sql = 'SELECT * FROM Usuario WHERE email = ?';
+            const [rows] = await pool.query(sql, [email]);
+            return rows[0];
+        } catch (err) {
+            throw err;
+        }
     },
-    getById: (id, callback) => {
-        const sql = 'SELECT * FROM Usuario WHERE id = $1';
-        pool.query(sql, [id], (err, result) => {
-            if (err) callback(err);
-            callback(null, result.rows[0]);
-        });
+    getById: async (id) => {
+        try {
+            const sql = 'SELECT * FROM Usuario WHERE id = ?';
+            const [rows] = await pool.query(sql, [id]);
+            return rows[0];
+        } catch (err) {
+            throw err;
+        }
     }
 };
 

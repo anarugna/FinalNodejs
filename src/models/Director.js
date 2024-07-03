@@ -1,42 +1,50 @@
 const pool = require('../config/db');
 
 const Director = {
-    create: (data, callback) => {
-        const sql = `INSERT INTO Director (nombre) VALUES ($1) RETURNING *`;
-        const values = [data.nombre];
-        pool.query(sql, values, (err, result) => {
-            if (err) callback(err);
-            callback(null, result.rows[0]);
-        });
+    create: async (data) => {
+        try {
+            const sql = `INSERT INTO Director (nombre) VALUES (?)`;
+            const [result] = await pool.query(sql, [data.nombre]);
+            return { id: result.insertId, ...data };
+        } catch (err) {
+            throw err;
+        }
     },
-    getAll: (callback) => {
-        const sql = 'SELECT * FROM Director';
-        pool.query(sql, (err, result) => {
-            if (err) callback(err);
-            callback(null, result.rows);
-        });
+    getAll: async () => {
+        try {
+            const sql = 'SELECT * FROM Director';
+            const [rows] = await pool.query(sql);
+            return rows;
+        } catch (err) {
+            throw err;
+        }
     },
-    getById: (id, callback) => {
-        const sql = 'SELECT * FROM Director WHERE id = $1';
-        pool.query(sql, [id], (err, result) => {
-            if (err) callback(err);
-            callback(null, result.rows[0]);
-        });
+    getById: async (id) => {
+        try {
+            const sql = 'SELECT * FROM Director WHERE id = ?';
+            const [rows] = await pool.query(sql, [id]);
+            return rows[0];
+        } catch (err) {
+            throw err;
+        }
     },
-    update: (id, data, callback) => {
-        const sql = `UPDATE Director SET nombre = $1 WHERE id = $2 RETURNING *`;
-        const values = [data.nombre, id];
-        pool.query(sql, values, (err, result) => {
-            if (err) callback(err);
-            callback(null, result.rows[0]);
-        });
+    update: async (id, data) => {
+        try {
+            const sql = `UPDATE Director SET nombre = ? WHERE id = ?`;
+            const [result] = await pool.query(sql, [data.nombre, id]);
+            return { id: id, ...data };
+        } catch (err) {
+            throw err;
+        }
     },
-    delete: (id, callback) => {
-        const sql = 'DELETE FROM Director WHERE id = $1 RETURNING *';
-        pool.query(sql, [id], (err, result) => {
-            if (err) callback(err);
-            callback(null, result.rows[0]);
-        });
+    delete: async (id) => {
+        try {
+            const sql = 'DELETE FROM Director WHERE id = ?';
+            const [result] = await pool.query(sql, [id]);
+            return result.affectedRows > 0;
+        } catch (err) {
+            throw err;
+        }
     }
 };
 
