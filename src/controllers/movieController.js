@@ -1,4 +1,4 @@
-const Movie = require('../models/Movie');
+const Movie = require('../models/movie');
 
 exports.createMovie = (req, res) => {
     const { titulo, descripcion, categoria_id, director_id } = req.body;

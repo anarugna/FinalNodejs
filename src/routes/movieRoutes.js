@@ -4,7 +4,7 @@ const movieController = require('../controllers/movieController');
 const auth = require('../middleware/auth');
 
 // Rutas para CRUD de películas
-router.post('/movies', auth, movieController.createMovie);
+router.post('/movies',auth, movieController.createMovie);
 router.get('/movies', auth, movieController.getMovies);
 router.get('/movies/:id', auth, movieController.getMovieById);
 router.put('/movies/:id', auth, movieController.updateMovie);
