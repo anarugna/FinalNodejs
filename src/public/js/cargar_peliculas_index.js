@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const formData = new FormData(form);
-            const response = await fetch('/api/movies/movies', {
+            const response = await fetch('/movies', {
                 method: 'POST',
                 body: formData
             });
