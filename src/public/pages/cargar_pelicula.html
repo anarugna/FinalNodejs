@@ -22,15 +22,15 @@
             <form id="formCargarPelicula" action="/api/movies/movies" method="post">
                 <h2 class="tituloRegistrarse">Cargar Película</h2>
                 <div>
-                    <input type="text" placeholder="Título" id="titulo" name="titulo">
+                    <input type="text" placeholder="Título" id="titulo" name="titulo" required>
                     <div class="error-text"></div>
                 </div>
                 <div>
-                    <textarea placeholder="Descripción" id="descripcion" name="descripcion"></textarea>
+                    <textarea placeholder="Descripción" id="descripcion" name="descripcion" required></textarea>
                     <div class="error-text"></div>
                 </div>
                 <div>
-                    <select id="categoria" name="categoria">
+                    <select id="categoria" name="categoria_id">
                         <option value="">Seleccionar Categoría</option>
                         <!-- Opciones de categorías se cargarán dinámicamente -->
                     </select>
@@ -41,7 +41,7 @@
                     <div class="error-text"></div>
                 </div>
                 <div>
-                    <select id="director" name="director">
+                    <select id="director" name="director_id">
                         <option value="">Seleccionar Director</option>
                         <!-- Opciones de directores se cargarán dinámicamente -->
                     </select>
@@ -59,10 +59,11 @@
                     <input class="boton" type="submit" value="Cargar Película">
                 </div>
             </form>
+            
         </section>
     </main>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-
+<script src="../js/cargar_CatDir"></script>
     <script src="../js/cargar_pelicula.js"></script>
     <script>
         AOS.init();

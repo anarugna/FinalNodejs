@@ -3,23 +3,23 @@ const Category = require('../models/Category');
 const Director = require('../models/Director');
 
 exports.createMovie = async (req, res) => {
-    const { titulo, descripcion, categoria, director } = req.body;
+    const { titulo, descripcion, categoria, director, nuevaCategoria, nuevoDirector } = req.body;
     let categoria_id = req.body.categoria_id;
     let director_id = req.body.director_id;
     let imagen_url = req.body.imagen_url; // Asegúrate de capturar la URL de la imagen aquí
 
     try {
-        // Verificar si se seleccionó una categoría existente
-        if (!categoria_id && categoria) {
+        // Verificar si se seleccionó una categoría existente o se ingresó una nueva
+        if (!categoria_id && nuevaCategoria) {
             // Crear una nueva categoría
-            const newCategory = await Category.create({ nombre: categoria });
+            const newCategory = await Category.create({ nombre: nuevaCategoria });
             categoria_id = newCategory.id;
         }
 
-        // Verificar si se seleccionó un director existente
-        if (!director_id && director) {
+        // Verificar si se seleccionó un director existente o se ingresó un nuevo
+        if (!director_id && nuevoDirector) {
             // Crear un nuevo director
-            const newDirector = await Director.create({ nombre: director });
+            const newDirector = await Director.create({ nombre: nuevoDirector });
             director_id = newDirector.id;
         }
 
@@ -86,4 +86,17 @@ exports.deleteMovie = (req, res) => {
         }
         res.status(200).send({ message: 'Película eliminada exitosamente' });
     });
+};
+
+exports.getCategoriesAndDirectors = async (req, res) => {
+    try {
+        const [categories, directors] = await Promise.all([
+            new Promise((resolve, reject) => Category.findAll((err, result) => (err ? reject(err) : resolve(result)))),
+            new Promise((resolve, reject) => Director.findAll((err, result) => (err ? reject(err) : resolve(result))))
+        ]);
+        res.status(200).send({ categories, directors });
+    } catch (error) {
+        console.error('Error al obtener categorías y directores:', error);
+        res.status(500).send({ error: 'Error al obtener categorías y directores' });
+    }
 };

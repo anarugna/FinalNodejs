@@ -54,5 +54,6 @@ router.get('/movies', movieController.getMovies);
 router.get('/movies/:id', movieController.getMovieById);
 router.put('/movies/:id', movieController.updateMovie);
 router.delete('/movies/:id', movieController.deleteMovie);
+router.get('/categoriesAndDirectors', movieController.getCategoriesAndDirectors); // Ruta para obtener categorías y directores
 
 module.exports = router;
