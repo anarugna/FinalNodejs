@@ -5,10 +5,14 @@ dotenv.config();
 
 module.exports = (req, res, next) => {
     const authHeader = req.headers['authorization'];
-    console.log(authHeader);
+
+    // Permitir acceso público a rutas específicas (por ejemplo, la ruta para registro de películas)
+    if (req.path === '/api/movies/movies' && req.method === 'POST') {
+        return next(); // Permitir acceso sin autenticación
+    }
 
     if (!authHeader) {
-        return res.status(403).send({ auth: false, message: 'No hay Token.pa nadie' });
+        return res.status(403).send({ auth: false, message: 'No hay Token para nadie' });
     }
 
     // El token está en el formato 'Bearer <token>'

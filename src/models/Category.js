@@ -7,6 +7,16 @@ const Category = {
             if (err) callback(err);
             callback(null, result);
         });
+    },
+    create: (data) => {
+        return new Promise((resolve, reject) => {
+            const { nombre } = data;
+            const sql = `INSERT INTO Categoria (nombre) VALUES (?)`;
+            db.query(sql, [nombre], (err, result) => {
+                if (err) return reject(err);
+                resolve({ id: result.insertId, nombre });
+            });
+        });
     }
 };
 
